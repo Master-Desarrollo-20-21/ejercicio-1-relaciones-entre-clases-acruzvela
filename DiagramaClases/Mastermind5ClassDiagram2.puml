@@ -1,0 +1,91 @@
+@@startuml
+
+class Mastermind {
+    +{static}void main( String[] args )
+    +void play()
+}
+
+class Game {
+    -int ATTEMPTS_NUMBER=10
+    -int numAttempt
+    -Board board
+    -SecretCombination secretCombination
+    -ArrayList<Attempt> attempts
+
+    +Game()
+    +void play()
+}
+
+class Board{
+
+    +String inputCombination()
+    +void printAttempt(String string)
+    +void finish(String string)
+}
+
+
+class Combination {
+    #{static}int COMBINATION_NUMBER=4
+    #Color[] colors
+
+    +Combination()  
+    +String toString()
+}
+
+class Attempt { 
+    -ProposedCombination proposed
+    -HashMap<Peg, Integer> pegs
+
+    +Attempt(String input)
+    +Attempt result(SecretCombination secret)
+    +boolean isWinner()
+    +String toString()
+}
+
+class ProposedCombination{
+    +ProposedCombination(String input)
+}
+
+class SecretCombination{
+    +SecretCombination()
+    +HashMap<Peg, Integer> compare(ProposedCombination proposed)
+}
+
+class Console {
+}
+
+enum Color {
+    BLUE 'b'
+    GREEN 'g'
+    CYAN 'c'
+    RED 'r'
+    PURPLE 'p'
+    ORANGE 'o'
+    VIOLET 'v'
+    YELLOW 'y'
+    
+    +char getNickname()
+    +{static}Color valueOf(char character)
+    +{static}String printAllColors()
+    +{static}boolean contains(String string)
+    +{static}boolean hasDuplicateColor(String string)
+}
+
+enum Peg {
+    WHITE
+    BLACK
+}
+
+
+Mastermind *-- Game
+Game o-- "10" Attempt
+Game *-- SecretCombination
+Game *-- Board
+Attempt *-- ProposedCombination 
+Attempt ..> SecretCombination
+Attempt ..> Peg 
+Combination *-- "4" Color
+Combination <|-- ProposedCombination
+Combination <|-- SecretCombination
+Board ..> Console
+@@enduml
